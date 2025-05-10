@@ -1,0 +1,157 @@
+
+  <!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Teste</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+    }
+    .cabecalho-pagina {
+      display: flex;
+      align-items: center;
+      justify-content: absolute;
+      gap: 12px;
+      padding: 15px;
+    }
+    .pagina {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      padding: 20px;
+    }
+    .product {
+      width: calc(50% - 10px);
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .product img {
+      border-radius: 5px;
+    }
+
+    /* Botão fixo no canto inferior direito */
+    #btnSalvar {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      z-index: 999;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    #btnSalvar:hover {
+      background-color: #388E3C;
+    }
+ 
+  .cabecalho-pagina img {
+    max-height: 60px;
+    width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 60%; /* deixa a borda redonda */
+      border: 0px solid none;
+margin-left: 0px;
+    display: flex;
+  }
+  
+  
+  
+   </style>
+
+  <!-- Biblioteca html2canvas -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+</head>
+<body>
+  <div class="cabecalho-pagina" id="cabecalho"></div>
+  <div class="pagina" id="pagina"></div>
+
+  <!-- Botão para salvar como imagem -->
+  <button id="btnSalvar" onclick="salvarComoImagem()">Salvar como Imagem</button>
+
+  <script>
+    const dados = JSON.parse(localStorage.getItem("resumoPersonalizado"));
+    if (dados) {
+      document.body.style.backgroundColor = dados.pageBg;
+      document.querySelector(".cabecalho-pagina").style.backgroundColor = dados.headerBg;
+
+      const cabecalho = document.getElementById("cabecalho");
+      if (dados.logo) {
+        const img = document.createElement("img");
+        img.src = dados.logo;
+        img.style.maxHeight = "60px";
+        cabecalho.appendChild(img);
+      }
+
+      const nome = document.createElement("div");
+      nome.className = "text";
+      nome.innerText = dados.nomeEmpresa;
+      nome.style.color = dados.nomeEmpresaColor;
+      nome.style.fontFamily = dados.nomeEmpresaFont;
+      nome.style.fontSize = "24px";
+      nome.style.fontWeight = "bold";
+      cabecalho.appendChild(nome);
+
+      const pagina = document.getElementById("pagina");
+      dados.produtos.forEach(p => {
+        const prodDiv = document.createElement("div");
+        prodDiv.className = "product";
+        prodDiv.style.backgroundColor = p.bgColor;
+
+        const img = document.createElement("img");
+        img.src = p.img;
+        img.style.width = "150px";
+
+        const title = document.createElement("div");
+        title.className = "title";
+        title.innerText = p.title;
+        title.style.color = p.titleColor;
+
+        const tam = document.createElement("div");
+        tam.className = "tam";
+        tam.innerText = p.tam;
+        tam.style.color = p.tamColor;
+
+        const price = document.createElement("div");
+        price.className = "price";
+        price.innerText = p.price;
+        price.style.color = p.priceColor;
+
+        prodDiv.appendChild(img);
+        prodDiv.appendChild(title);
+        prodDiv.appendChild(tam);
+        prodDiv.appendChild(price);
+        pagina.appendChild(prodDiv);
+      });
+    }
+
+    function salvarComoImagem() {
+      const botao = document.getElementById("btnSalvar");
+      botao.style.display = "none"; // Esconde o botão
+
+      setTimeout(() => {
+        html2canvas(document.body).then(canvas => {
+          const link = document.createElement("a");
+          link.download = "pagina-resumo.png";
+          link.href = canvas.toDataURL("image/png");
+          link.click();
+
+          botao.style.display = "inline-block"; // Mostra o botão de volta
+        });
+      }, 300);
+    }
+  </script>
+</body>
+</html>
