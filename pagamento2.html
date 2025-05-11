@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pagamento com Mercado Pago</title>
+</head>
+<body>
+
+  <h1>Pagamento com Mercado Pago</h1>
+
+  <h2>Produto: Camiseta Estampada</h2>
+  <p>Preço: R$ 50,00</p>
+  <button id="btnPagar">Pagar com Mercado Pago</button>
+
+  <script>
+    document.getElementById('btnPagar').addEventListener('click', function() {
+      // Substitua pelo seu link real de pagamento do Mercado Pago
+      const linkPagamento = 'https://mpago.la/2wipSaU';
+      window.open(linkPagamento, '_blank');
+    });
+  </script>
+
+</body>
+</html>
